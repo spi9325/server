@@ -42,6 +42,10 @@ export class SuperAdminGuard implements CanActivate {
     const [type, token] = request.headers.authorization?.split(' ') ?? [];
     return type === 'Bearer' ? token : undefined;
   }
+
+   private extractFromCookie(request: any): string | null {
+    return request.cookies?.access_token ?? null;
+  }
 }
 
 
