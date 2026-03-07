@@ -1,4 +1,3 @@
-
 import {
   CanActivate,
   ExecutionContext,
@@ -6,27 +5,37 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 
 @Injectable()
 export class SuperAdminGuard implements CanActivate {
   constructor(private jwtService: JwtService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request = context.switchToHttp().getRequest();
+    const request = context.switchToHttp().getRequest<Request>();
+    const response = context.switchToHttp().getResponse<Response>();
+
     const token = this.extractTokenFromHeader(request);
     if (!token) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('No token provided');
     }
+
     try {
-      
       const payload = await this.jwtService.verifyAsync(token);
-      
+
       request['SuperAdmin'] = payload;
-    } catch {
-      throw new UnauthorizedException();
+
+      response.cookie('token', token, {
+        httpOnly: true, 
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in ms
+        secure: process.env.NODE_ENV === 'production', 
+        sameSite: 'strict',
+      });
+
+      return true;
+    } catch (err) {
+      throw new UnauthorizedException('Invalid or expired token');
     }
-    return true;
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {
@@ -34,3 +43,10 @@ export class SuperAdminGuard implements CanActivate {
     return type === 'Bearer' ? token : undefined;
   }
 }
+
+
+
+// for specfic token
+//     const token =
+      // this.extractFromHeader(request) ||
+      // this.extractFromCookie(request);

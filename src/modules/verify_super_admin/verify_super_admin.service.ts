@@ -14,10 +14,10 @@ export class VerifySuperAdminService {
     });
     async sendVerificationEmail(to: string, Token: string) {
         try {
-            const email_Url = `http://localhost:3000/auth?Token=${Token}`;
+            const email_Url = `http://localhost:5173/auth?Token=${Token}`;
 
             const res = await this.transporter.sendMail({
-                from: '"sanket send email to" <sanketinamdar72@gmail.com>',
+                from: '"sanket send email to" <shreyashjadhav59807@gmail.com>',
                 to: to,
                 subject: "Super Admin Verification Email",
                 text: "this is verification email",
