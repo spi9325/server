@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Response } from '@nestjs/common';
 import * as nodemailer from 'nodemailer'
 
 @Injectable()

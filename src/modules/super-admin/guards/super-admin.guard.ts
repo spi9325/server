@@ -16,7 +16,10 @@ export class SuperAdminGuard implements CanActivate {
     const response = context.switchToHttp().getResponse<Response>();
 
     const token = this.extractTokenFromHeader(request);
-    if (!token) {
+    const token2 = this.extractFromCookie(request)
+    console.log(token2,"22222")
+    
+    if (!token || !token2) {
       throw new UnauthorizedException('No token provided');
     }
 
@@ -25,11 +28,11 @@ export class SuperAdminGuard implements CanActivate {
 
       request['SuperAdmin'] = payload;
 
-      response.cookie('token', token, {
+      response.cookie('token', "hiiii", {
         httpOnly: true, 
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in ms
-        secure: process.env.NODE_ENV === 'production', 
-        sameSite: 'strict',
+        secure: true, 
+        sameSite: 'none',
       });
 
       return true;
@@ -43,8 +46,8 @@ export class SuperAdminGuard implements CanActivate {
     return type === 'Bearer' ? token : undefined;
   }
 
-   private extractFromCookie(request: any): string | null {
-    return request.cookies?.access_token ?? null;
+  private extractFromCookie(request: any): string | null {
+    return request.cookies?.token ?? null;
   }
 }
 
