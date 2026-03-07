@@ -95,4 +95,8 @@ export class VerifySuperAdminService {
             console.log(error);
         }
     }
+    
+    me(){
+        return {message: "hiiiiiiiii"}
+    }
 }

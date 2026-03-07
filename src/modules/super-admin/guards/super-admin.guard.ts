@@ -28,11 +28,11 @@ export class SuperAdminGuard implements CanActivate {
 
       request['SuperAdmin'] = payload;
 
-      response.cookie('token', "hiiii", {
+      response.cookie('token', token, {
         httpOnly: true, 
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in ms
         secure: true, 
-        sameSite: 'none',
+        sameSite: 'strict',
       });
 
       return true;
