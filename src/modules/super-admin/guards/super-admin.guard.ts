@@ -17,7 +17,6 @@ export class SuperAdminGuard implements CanActivate {
 
     const token = this.extractTokenFromHeader(request);
     const token2 = this.extractFromCookie(request)
-    console.log(token2,"22222")
     
     if (!token || !token2) {
       throw new UnauthorizedException('No token provided');
