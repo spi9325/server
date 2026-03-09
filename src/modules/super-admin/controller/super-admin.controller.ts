@@ -19,6 +19,6 @@ export class SuperAdminController {
    }
    @Get("/me")
    Me(@Request() req: any) {
-      return this.VerifySuperAdminService.me();
+      return this.VerifySuperAdminService.me(req);
    }
 }

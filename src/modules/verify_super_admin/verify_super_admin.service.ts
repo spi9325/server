@@ -1,4 +1,5 @@
 import { Injectable, Response } from '@nestjs/common';
+import { Request } from 'express';
 import * as nodemailer from 'nodemailer'
 
 @Injectable()
@@ -96,7 +97,7 @@ export class VerifySuperAdminService {
         }
     }
     
-    me(){
-        return {message: "hiiiiiiiii"}
+    me(req:{super_admin:string}){
+        return { id:req?.super_admin }
     }
 }
