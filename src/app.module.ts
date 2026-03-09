@@ -4,7 +4,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { Super_Admin_Middleware } from './common/middleware/user.middleware';
+import { Super_Admin_Middleware } from './common/middleware/super-admin.middleware';
 import { jwtConstants } from './modules/super-admin/constants';
 import { SuperAdminModule } from './modules/super-admin/super-admin.module';
 import { VerifySuperAdminModule } from './modules/verify_super_admin/verify_super_admin.module';
