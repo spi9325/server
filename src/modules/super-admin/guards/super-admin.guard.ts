@@ -17,17 +17,17 @@ export class SuperAdminGuard implements CanActivate {
 
     const token = this.extractTokenFromHeader(request);
     const token2 = this.extractFromCookie(request)
-    
-    if (!token || !token2) {
+    const finalToken = token || token2
+    if (!finalToken) {
       throw new UnauthorizedException('No token provided');
     }
 
     try {
-      const payload = await this.jwtService.verifyAsync(token);
+      const payload = await this.jwtService.verifyAsync(finalToken);
 
       request['SuperAdmin'] = payload;
 
-      response.cookie('token', token, {
+      response.cookie('token', finalToken, {
         httpOnly: true, 
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in ms
         secure: true, 

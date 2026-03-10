@@ -1,10 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { JwtSchemaModel } from '../schema/super-admin-jwt.schema';
-import { VerifySuperAdminService } from 'src/modules/verify_super_admin/verify_super_admin.service';
 import { findAdmin } from 'src/modules/super-admin/repository/super-admin';
+import { VerifySuperAdminService } from 'src/modules/verify_super_admin/verify_super_admin.service';
+import { JwtSchemaModel } from '../schema/super-admin-jwt.schema';
 import { SuperAdminSchemaModel } from '../schema/super-auth.schema';
 
 @Injectable()
@@ -41,6 +41,23 @@ export class AuthService {
             }
         } else {
             return { message: "super-admin not exist..", statusCode: 404 }
+        }
+    }
+
+    async logout(req:any,res:any){
+        try {
+            const token = req.cookies.token;
+            const payload = await this.jwtService.verifyAsync(token);
+            if(payload){
+                res.clearCookie('token',{
+                    httpOnly: true, 
+                    secure: true, 
+                    sameSite: 'strict',
+                })
+            }
+            return {success:false,message:"logout failed..."}
+        } catch (error) {
+             throw new InternalServerErrorException("Logout failed");
         }
     }
 }

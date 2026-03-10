@@ -30,7 +30,8 @@ export class AppModule {
       .apply(Super_Admin_Middleware)
     .exclude(
         { path: "api/super-admin/signin", method: RequestMethod.ALL },
-        { path: "api/super-admin/verify", method: RequestMethod.ALL }
+        { path: "api/super-admin/verify", method: RequestMethod.ALL },
+        { path: "api/super-admin/logout", method: RequestMethod.ALL }
       )
       .forRoutes("*");
   }
