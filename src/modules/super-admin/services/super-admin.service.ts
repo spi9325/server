@@ -55,7 +55,7 @@ export class AuthService {
                     sameSite: 'strict',
                 })
             }
-            return {success:false,message:"logout failed..."}
+            return {success:true,message:"logout success..."}
         } catch (error) {
              throw new InternalServerErrorException("Logout failed");
         }

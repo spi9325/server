@@ -91,7 +91,6 @@ export class VerifySuperAdminService {
             if (!SuperAdmin) {
                 return { message: "invalid token", statusCode: 400 }
             }
-            console.log(SuperAdmin)
             return { message: "Super Admin verified successfully", statusCode: 200 }
         } catch (error) {
             console.log(error);
