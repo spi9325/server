@@ -5,3 +5,9 @@ export interface partnerPayload{
         email:string;
     }
 }
+export interface superAdminPayload{
+    SuperAdmin:{
+        adminId:string;
+        email:string;
+    }
+}

@@ -1,8 +1,9 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { partnerPayload } from './types/payload-partner';
+import { partnerPayload, superAdminPayload } from './types/payload-partner';
 import { KafkaService } from '../kafka/kafka.service';
-import { sendDataToKafka } from './types/sendData-toKafka';
 import { RedisService } from '../redis/redis.service';
+import { sendDataToKafkaType } from './types/sendData-toKafka';
+import { Warehouse } from './DTO/warehouse.dto';
 
 @Injectable()
 export class GeoService {
@@ -10,7 +11,7 @@ export class GeoService {
 
     getLocation(lat:string, log:string, req:partnerPayload){
         try {
-            const sendData:sendDataToKafka = {
+            const sendData:sendDataToKafkaType = {
                 partnerEmail: req.partner.email,
                 latitude: lat,
                 longitude: log
@@ -27,6 +28,22 @@ export class GeoService {
         try {
             const data = await this.RedisService.getDriverLocation()
             return data;
+        } catch (error) {
+            throw new InternalServerErrorException("internal server error"); 
+        }
+    }
+
+    async addWarehouse(Warehouse:Warehouse,req:superAdminPayload){
+        try {
+            const sendData = {
+                superAdmin: req.SuperAdmin.email,
+                type:Warehouse.type,
+                latitude: Warehouse.lat,
+                longitude: Warehouse.log
+            } 
+            
+           
+            return this.kafkaService.sendLocation(sendData)
         } catch (error) {
             throw new InternalServerErrorException("internal server error"); 
         }
