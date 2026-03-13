@@ -2,6 +2,8 @@ import { Body, Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common
 import { GeoService } from './geo.service';
 import { LocationDto } from './DTO/location.dto';
 import { PartnerGuard } from './guards/partner.guard';
+import { Warehouse } from './DTO/warehouse.dto';
+import { SuperAdminGuard } from 'src/common/guard/superAdmin.guard';
 
 @Controller('api/geo')
 export class GeoController {
@@ -16,5 +18,10 @@ export class GeoController {
     @UseGuards(PartnerGuard)
     getlocation(@Res({ passthrough: true }) res: any) {
        return this.GeoService.getPartnerLocation();
+    }
+    @Post("add-warehouse")
+    @UseGuards(SuperAdminGuard)
+    addWarehouse(@Body() Warehouse:Warehouse,@Req() req:any,@Res({ passthrough: true }) res: any) {
+       return this.GeoService.addWarehouse(Warehouse,req);
     }
 }

@@ -2,6 +2,7 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 import Redis from 'ioredis';
 import { driverType } from './types/driverTypes';
 import { locationType } from './types/redisLocations';
+import { sendDataToKafkaType } from '../geo/types/sendData-toKafka';
 
 @Injectable()
 export class RedisService implements OnModuleInit {
@@ -22,16 +23,18 @@ export class RedisService implements OnModuleInit {
   }
 
 
-  async storeDriverLocation(data: driverType) {
-    const key = data.partnerEmail;
-
+  async storeDriverLocation(data: sendDataToKafkaType,) {
+    const key = data.partnerEmail || data.superAdmin;
+    const whichUser = data.superAdmin ? "superAdmin" : "partnerEmail";
+  
     const value = {
-      partnerEmail:key,
-      type:"rider",
+      [whichUser]:key,
+      type: data.type ? data.type : "rider",
       latitude:data.latitude,
       longitude:data.longitude
     };
-    await this.client.set(key, JSON.stringify(value));
+    
+    await this.client.set(key!, JSON.stringify(value));
 
   }
 

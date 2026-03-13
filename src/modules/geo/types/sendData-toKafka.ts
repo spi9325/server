@@ -1,5 +1,9 @@
-export interface sendDataToKafka {
-    partnerEmail: string,
+export interface sendDataToKafkaType {
+    superAdmin?: string,
+    partnerEmail?: string,
+    type?: string,
     latitude: string,
     longitude: string
-} 
+}
+
+
